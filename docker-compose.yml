@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  exchange:
+    image: 'exchange:latest'
+    build:
+      context: .
+    container_name: exchange
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_APPLICATION_NAME=exchange
+      - SPRING_MVC_MATCHING_STRATEGY=ant_path_matcher
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_SHOW_SQL=false
+      - SPRING_JPA_GENERATE_DDL=true
+    ports:
+      - "8081:8080"
+
+  postgres:
+    image: 'postgres:13.1-alpine'
+    container_name: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5433:5432"
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    logging:
+      driver: none
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@sgv.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "81:80"
+volumes:
+  pgdata:

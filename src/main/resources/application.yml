@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: exchange
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  # Database
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
